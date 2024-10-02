@@ -64,3 +64,18 @@ footer {
   width: 100%;
   bottom: 0;
 }
+
+#customer-info {
+  margin: 20px 0;
+}
+
+#customer-info label, #customer-info input {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#customer-info input {
+  padding: 8px;
+  width: 100%;
+  max-width: 300px;
+}
