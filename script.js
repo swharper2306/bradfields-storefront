@@ -25,7 +25,34 @@ function updateCart() {
 }
 
 function checkout() {
-  alert(`Your order total is $${totalPrice.toFixed(2)}. Thank you for your purchase!`);
-  cart = [];
-  updateCart();
+  const customerName = document.getElementById('customer-name').value;
+  const customerEmail = document.getElementById('customer-email').value;
+
+  if (!customerName || !customerEmail) {
+    alert('Please enter your name and email before checking out.');
+    return;
+  }
+
+  let orderDetails = '';
+  cart.forEach((item) => {
+    orderDetails += `${item.name} - $${item.price.toFixed(2)}\n`;
+  });
+
+  // Send email via EmailJS
+  emailjs.send(service_cojca1l, templet_1ho3vzm, {
+    customer_name: customerName,
+    customer_email: customerEmail,
+    order_details: orderDetails,
+    total_price: totalPrice.toFixed(2)
+  })
+  .then((response) => {
+    alert('Order placed successfully! A confirmation email will be sent.');
+    console.log('SUCCESS!', response.status, response.text);
+    cart = []; // Clear cart
+    updateCart(); // Update cart display
+  }, (error) => {
+    alert('Failed to send order. Please try again.');
+    console.log('FAILED...', error);
+  });
 }
+
