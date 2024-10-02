@@ -28,15 +28,6 @@
     </div>
   </section>
 
-  <section id="cart">
-    <h3>Your Cart</h3>
-    <ul id="cart-items">
-      <li>No items in cart.</li>
-    </ul>
-    <p>Total: $<span id="total-price">0.00</span></p>
-    <button onclick="checkout()">Checkout</button>
-  </section>
-
 <section id="customer-info">
   <h3>Customer Information</h3>
   <label for="customer-name">Name:</label>
@@ -47,15 +38,23 @@
 
   <button onclick="checkout()">Checkout</button>
 </section>
+  
+  <section id="cart">
+    <h3>Your Cart</h3>
+    <ul id="cart-items">
+      <li>No items in cart.</li>
+    </ul>
+    <p>Total: $<span id="total-price">0.00</span></p>
+    <button onclick="checkout()">Checkout</button>
+  </section>
 
   <footer>
     <p>Contact us at: info@bradfieldscomputersupply.com</p>
   </footer>
 
   <script src="script.js"></script>
-
-    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
-<script type="text/javascript">
+  <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+  <script type="text/javascript">
   (function() {
     emailjs.init("Steve Harper"); // Replace "YOUR_USER_ID" with your actual EmailJS user ID
   })();
