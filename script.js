@@ -39,7 +39,7 @@ function checkout() {
   });
 
   // Send email via EmailJS
-  emailjs.send(service_cojca1l, templet_1ho3vzm, {
+  emailjs.send("service_cojca1l", "templet_1ho3vzm", {
     customer_name: customerName,
     customer_email: customerEmail,
     order_details: orderDetails,
