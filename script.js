@@ -1,42 +1,44 @@
 let cart = [];
 let totalPrice = 0;
 
-function addToCart(productName, productPrice) {
-  cart.push({ name: productName, price: productPrice });
+// Function to add items to the cart
+function addToCart(productName, price, quantity) {
+  quantity = parseInt(quantity); // Ensure quantity is an integer
+  cart.push({ name: productName, price: price, quantity: quantity });
   updateCart();
 }
 
+// Function to update the cart display
 function updateCart() {
-  const cartItems = document.getElementById('cart-items');
-  cartItems.innerHTML = '';
-
-  cart.forEach((item) => {
-    const li = document.createElement('li');
-    li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
-    cartItems.appendChild(li);
-  });
-
-  totalPrice = cart.reduce((total, item) => total + item.price, 0);
-  document.getElementById('total-price').textContent = totalPrice.toFixed(2);
+  const cartItems = document.getElementById("cart-items");
+  const totalPriceElem = document.getElementById("total-price");
+  cartItems.innerHTML = ''; // Clear previous items
 
   if (cart.length === 0) {
     cartItems.innerHTML = '<li>No items in cart.</li>';
+  } else {
+    cart.forEach((item, index) => {
+      const itemTotalPrice = (item.price * item.quantity).toFixed(2);
+      cartItems.innerHTML += `<li>${item.name} (x${item.quantity}) - $${itemTotalPrice}</li>`;
+    });
   }
+
+  // Calculate total price
+  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  totalPriceElem.textContent = totalPrice.toFixed(2);
 }
 
 function checkout() {
-  const customerName = document.getElementById('customer-name').value;
-  const customerEmail = document.getElementById('customer-email').value;
+  const customerName = document.getElementById("customer-name").value;
+  const customerEmail = document.getElementById("customer-email").value;
 
   if (!customerName || !customerEmail) {
-    alert('Please enter your name and email before checking out.');
+    alert("Please enter your name and email before checking out.");
     return;
   }
 
-  let orderDetails = '';
-  cart.forEach((item) => {
-    orderDetails += `${item.name} - $${item.price.toFixed(2)}\n`;
-  });
+  const orderDetails = cart.map(item => `${item.name} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`).join(", ");
+  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   // Send email via EmailJS
   emailjs.send("service_cojca1l", "template_1ho3vzm", {
@@ -55,4 +57,5 @@ function checkout() {
     console.log('FAILED...', error);
   });
 }
+
 
