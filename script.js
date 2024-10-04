@@ -29,33 +29,48 @@ function updateCart() {
 }
 
 function checkout() {
+  // Get customer information
   const customerName = document.getElementById("customer-name").value;
   const customerEmail = document.getElementById("customer-email").value;
+  const customerAddress = document.getElementById("customer-address").value;
+  const dropoffLocation = document.getElementById("dropoff-location").value;
+  const customerPhone = document.getElementById("customer-phone").value;
 
-  if (!customerName || !customerEmail) {
-    alert("Please enter your name and email before checking out.");
+  // Check if required fields are filled
+  if (!customerName || !customerEmail || !customerAddress || !dropoffLocation || !customerPhone) {
+    alert("Please fill out all the fields before checking out.");
     return;
   }
 
-  const orderDetails = cart.map(item => `${item.name} (x${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`).join(", ");
-  const totalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  // Generate order details from cart
+  const orderDetails = cart.map(item => `${item.name} - $${item.price} x ${item.quantity}`).join('\n');
+  const totalPrice = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+
+  // Check if cart is empty
+  if (cart.length === 0) {
+    alert('Your cart is empty. Please add some items before checking out.');
+    return;
+  }
 
   // Send email via EmailJS
-  emailjs.send("service_cojca1l", "template_1ho3vzm", {
+  emailjs.send("service_ynszdmf", "template_gaxjw0r", {
     customer_name: customerName,
     customer_email: customerEmail,
-    order_details: orderDetails,
+    customer_address: customerAddress,
+    dropoff_location: dropoffLocation,
+    customer_phone: customerPhone,
+    order_details: orderDetails,  // This is now properly defined
     total_price: totalPrice.toFixed(2)
   })
   .then((response) => {
     alert('Order placed successfully! A confirmation email will be sent.');
     console.log('SUCCESS!', response.status, response.text);
-    cart = []; // Clear cart
-    updateCart(); // Update cart display
+    
+    // Clear cart and update display
+    cart = [];
+    updateCart();
   }, (error) => {
     alert('Failed to send order. Please try again.');
     console.log('FAILED...', error);
   });
 }
-
-
